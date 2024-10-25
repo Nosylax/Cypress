@@ -8,5 +8,5 @@ export function login() {
 export function openProduct() {
   cy.wait(500);
   cy.get('[data-cy="nav-link-products"]').click();
-  cy.get(':nth-child(2) > .add-to-cart > [data-cy="product-link"]').click();
+  cy.get(':nth-child(3) > .add-to-cart > [data-cy="product-link"]').click();
 }
