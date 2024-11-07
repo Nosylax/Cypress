@@ -1,6 +1,9 @@
 import { login, openProduct } from "./script.js";
 describe("Smoke Test", () => {
   beforeEach(() => {
+    cy.intercept("GET", "http://localhost:8081/products").as("getProduct");
+    cy.intercept("POST", "http://localhost:8081/login").as("PostLogin");
+
     cy.visit("/");
   });
   it("Verify the presence of login fields and buttons.", () => {
@@ -12,6 +15,7 @@ describe("Smoke Test", () => {
   });
   it("Verify the presence of 'Add to Cart' buttons when logged in.", () => {
     login();
+    cy.wait("@PostLogin");
     openProduct();
     cy.get('[data-cy="detail-product-add"]')
       .should("exist")
@@ -19,6 +23,7 @@ describe("Smoke Test", () => {
   });
   it("Verify the presence of the product availability field if I am logged in.", () => {
     login();
+    cy.wait("@PostLogin");
     openProduct();
     cy.get('[data-cy="detail-product-stock"]').should("exist");
   });

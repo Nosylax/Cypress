@@ -1,11 +1,17 @@
 import { login } from "./script.js";
 describe("Login", () => {
   beforeEach(() => {
+    cy.intercept("POST", "http://localhost:8081/login").as("PostLogin");
+    cy.intercept("GET", "http://localhost:8081/orders").as("GetCart");
+    cy.intercept("PUT", "http://localhost:8081/orders/add").as("PutAddCart");
+    cy.intercept("GET", "http://localhost:8081/products").as("GetProduct");
+    cy.intercept("GET", "http://localhost:8081/products/5").as("GetProductId");
+
     cy.visit("/");
     login();
-    cy.wait(500);
+    cy.wait("@PostLogin");
     cy.get('[data-cy="nav-link-cart"]').click();
-    cy.wait(500);
+    cy.wait("@GetCart");
     cy.get("body").then((body) => {
       if (body.find('[data-cy="cart-line"]').length > 0) {
         cy.get('[data-cy="cart-line-delete"]').each(($btn) => {
@@ -15,29 +21,24 @@ describe("Login", () => {
     });
   });
   it("Verify that the product has been added to the cart and that the stock has been updated.", () => {
-    cy.intercept("PUT", "http://localhost:8081/orders/add").as("apiCallAdd");
-    cy.intercept("GET", "http://localhost:8081/orders").as("apiCallOrders");
-
-    cy.wait(500);
     cy.get('[data-cy="nav-link-products"]').click();
-    cy.wait(500);
+    cy.wait("@GetProduct");
     cy.get(':nth-child(3) > .add-to-cart > [data-cy="product-link"]').click();
-    cy.wait(500);
-
+    cy.wait("@GetProductId");
     cy.get('[data-cy="detail-product-stock"]').then((element) => {
       const initialStock = Number(element.text().match(/\d+/g));
 
       cy.get('[data-cy="detail-product-add"]').click();
 
       //vérifiez que le produit a été ajouté au panier//
-      cy.wait("@apiCallAdd").then((interception) => {
+      cy.wait("@PutAddCart").then((interception) => {
         expect(interception.response.statusCode).to.eq(200);
         const order = interception.response.body;
         const orderLine = order.orderLines[0];
         const nameProduct = orderLine.product.name;
         const productQuantity = orderLine.quantity;
 
-        cy.wait("@apiCallOrders").then((interception) => {
+        cy.wait("@GetCart").then((interception) => {
           expect(interception.response.statusCode).to.eq(200);
           const order = interception.response.body;
           const orderLine = order.orderLines[0];
@@ -57,7 +58,7 @@ describe("Login", () => {
             cy.get(
               ':nth-child(3) > .add-to-cart > [data-cy="product-link"]'
             ).click();
-            cy.wait(500);
+            cy.wait("@GetProductId");
             cy.get('[data-cy="detail-product-stock"]').then((element) => {
               const updatedStock = Number(element.text().match(/\d+/g));
 
@@ -83,7 +84,7 @@ describe("Login", () => {
 });
 afterEach(() => {
   cy.get('[data-cy="nav-link-cart"]').click();
-  cy.wait(500);
+  cy.wait("@GetCart");
   cy.get("body").then((body) => {
     if (body.find('[data-cy="cart-line"]').length > 0) {
       cy.get('[data-cy="cart-line-delete"]').each(($btn) => {
