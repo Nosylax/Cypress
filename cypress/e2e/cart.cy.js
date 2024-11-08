@@ -5,7 +5,7 @@ describe("Login", () => {
     cy.intercept("GET", "http://localhost:8081/orders").as("GetCart");
     cy.intercept("PUT", "http://localhost:8081/orders/add").as("PutAddCart");
     cy.intercept("GET", "http://localhost:8081/products").as("GetProduct");
-    cy.intercept("GET", "http://localhost:8081/products/5").as("GetProductId");
+    cy.intercept("GET", "http://localhost:8081/products/6").as("GetProductId");
 
     cy.visit("/");
     login();
@@ -23,7 +23,7 @@ describe("Login", () => {
   it("Verify that the product has been added to the cart and that the stock has been updated.", () => {
     cy.get('[data-cy="nav-link-products"]').click();
     cy.wait("@GetProduct");
-    cy.get(':nth-child(3) > .add-to-cart > [data-cy="product-link"]').click();
+    cy.get(':nth-child(4) > .add-to-cart > [data-cy="product-link"]').click();
     cy.wait("@GetProductId");
     cy.get('[data-cy="detail-product-stock"]').then((element) => {
       const initialStock = Number(element.text().match(/\d+/g));
@@ -56,7 +56,7 @@ describe("Login", () => {
 
             cy.get('[data-cy="nav-link-products"]').click();
             cy.get(
-              ':nth-child(3) > .add-to-cart > [data-cy="product-link"]'
+              ':nth-child(4) > .add-to-cart > [data-cy="product-link"]'
             ).click();
             cy.wait("@GetProductId");
             cy.get('[data-cy="detail-product-stock"]').then((element) => {
@@ -72,7 +72,7 @@ describe("Login", () => {
 
   it("Verify the limits (negative number and number greater than 20).", () => {
     cy.get('[data-cy="nav-link-products"]').click();
-    cy.get(':nth-child(3) > .add-to-cart > [data-cy="product-link"]').click();
+    cy.get(':nth-child(4) > .add-to-cart > [data-cy="product-link"]').click();
 
     cy.get('[data-cy="detail-product-quantity"]').clear("");
     cy.get('[data-cy="detail-product-quantity"]').type("-10");
