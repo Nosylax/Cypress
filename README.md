@@ -18,9 +18,9 @@ Ce projet de d'automatisation de test a été réalisé dans le cadre de la pré
 
 Installation de :
 
-[NodeJS](https://nodejs.org/en/learn/getting-started/introduction-to-nodejs)
-[npm](https://docs.npmjs.com/about-npm)
-[Cypress](https://www.cypress.io/)
+- [NodeJS](https://nodejs.org/en/learn/getting-started/introduction-to-nodejs)
+- [npm](https://docs.npmjs.com/about-npm)
+- [Cypress](https://www.cypress.io/)
 
 ## Installation du projet
 
