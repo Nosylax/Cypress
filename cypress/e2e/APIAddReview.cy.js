@@ -26,6 +26,7 @@ describe("Add a review", () => {
       }).then((response) => {
         console.log(response);
         expect(response.status).to.eq(200);
+        //Rajouter reponse et avec commentaire js//
       });
     });
   });

@@ -80,6 +80,7 @@ describe("Login", () => {
     cy.get('[data-cy="detail-product-quantity"]').clear("");
     cy.get('[data-cy="detail-product-quantity"]').type("25");
     cy.get('[data-cy="detail-product-add"]').click();
+    //Verifier panier doit être vide//
   });
 });
 afterEach(() => {

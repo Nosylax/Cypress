@@ -12,10 +12,14 @@ describe("Product Sheet Request", () => {
       expect(response.status).to.eq(200);
       const token = response.body.token;
       cy.request({
-        method: "GET",
-        url: "http://localhost:8081/products/random",
+        method: "PUT",
+        url: "http://localhost:8081/orders/add",
         headers: {
           Authorization: `Bearer ${token}`,
+        },
+        body: {
+          product: 4,
+          quantity: 1,
         },
       })
         .then((response) => {
@@ -36,6 +40,7 @@ describe("Product Sheet Request", () => {
           const order = response.body;
           const orderLine = order.orderLines[0];
           expect(orderLine).to.have.property("product").that.is.an("object");
+          //Verifier id produit //
         });
     });
   });
