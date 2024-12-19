@@ -39,7 +39,8 @@ describe("Product Sheet Request", () => {
 
           const order = response.body;
           const orderLine = order.orderLines[0];
-          expect(orderLine).to.have.property("product").that.is.an("object");
+          expect(orderLine.product).to.have.property("id", 4);
+
           //Verifier id produit //
         });
     });

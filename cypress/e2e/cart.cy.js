@@ -1,4 +1,3 @@
-import { login } from "./script.js";
 describe("Login", () => {
   beforeEach(() => {
     cy.intercept("POST", "http://localhost:8081/login").as("PostLogin");
@@ -8,7 +7,7 @@ describe("Login", () => {
     cy.intercept("GET", "http://localhost:8081/products/6").as("GetProductId");
 
     cy.visit("/");
-    login();
+    cy.login();
     cy.wait("@PostLogin");
     cy.get('[data-cy="nav-link-cart"]').click();
     cy.wait("@GetCart");
@@ -77,9 +76,17 @@ describe("Login", () => {
     cy.get('[data-cy="detail-product-quantity"]').clear("");
     cy.get('[data-cy="detail-product-quantity"]').type("-10");
     cy.get('[data-cy="detail-product-add"]').click();
+    cy.get('[data-cy="nav-link-cart"]').click();
+    cy.wait("@GetCart");
+    cy.get("p").should("contain", "Votre panier est vide.");
+    cy.get('[data-cy="nav-link-products"]').click();
+    cy.get(':nth-child(4) > .add-to-cart > [data-cy="product-link"]').click();
     cy.get('[data-cy="detail-product-quantity"]').clear("");
     cy.get('[data-cy="detail-product-quantity"]').type("25");
     cy.get('[data-cy="detail-product-add"]').click();
+    cy.get('[data-cy="nav-link-cart"]').click();
+    cy.wait("@GetCart");
+    cy.get("p").should("contain", "Votre panier est vide.");
     //Verifier panier doit être vide//
   });
 });
