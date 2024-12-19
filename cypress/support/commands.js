@@ -10,3 +10,16 @@ Cypress.Commands.add("openProduct", () => {
   cy.wait("@getProduct");
   cy.get(':nth-child(3) > .add-to-cart > [data-cy="product-link"]').click();
 });
+
+Cypress.Commands.add("loginAPI", () => {
+  cy.request({
+    method: "POST",
+    url: "http://localhost:8081/login",
+    body: {
+      username: "test2@test.fr",
+      password: "testtest",
+    },
+  }).then((response) => {
+    return response.body.token;
+  });
+});

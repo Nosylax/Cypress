@@ -80,7 +80,7 @@ describe("Login", () => {
     cy.get('[data-cy="detail-product-add"]').click();
     cy.get('[data-cy="nav-link-cart"]').click();
     cy.wait("@GetCart");
-    cy.get("p").should("contain", "Votre panier est vide.");
+    cy.get('[data-cy="cart-empty"]').should("exist");
     cy.get('[data-cy="nav-link-products"]').click();
     cy.get(':nth-child(4) > .add-to-cart > [data-cy="product-link"]').click();
     cy.get('[data-cy="detail-product-quantity"]').clear("");
@@ -88,8 +88,7 @@ describe("Login", () => {
     cy.get('[data-cy="detail-product-add"]').click();
     cy.get('[data-cy="nav-link-cart"]').click();
     cy.wait("@GetCart");
-    cy.get("p").should("contain", "Votre panier est vide.");
-    //Verifier panier doit être vide//
+    cy.get('[data-cy="cart-empty"]').should("exist");
   });
 });
 afterEach(() => {

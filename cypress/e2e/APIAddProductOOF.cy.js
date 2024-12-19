@@ -1,14 +1,7 @@
 describe("Add an out-of-stock product to the cart", () => {
   it("Add an out-of-stock product to the cart", () => {
-    cy.request({
-      method: "POST",
-      url: "http://localhost:8081/login",
-      body: {
-        username: "test2@test.fr",
-        password: "testtest",
-      },
-    }).then((response) => {
-      const token = response.body.token;
+    cy.loginAPI().then((response) => {
+      const token = response;
       cy.request({
         method: "PUT",
         url: "http://localhost:8081/orders/add",
