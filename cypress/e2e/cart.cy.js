@@ -34,8 +34,10 @@ describe("Login", () => {
         expect(interception.response.statusCode).to.eq(200);
         const order = interception.response.body;
         const orderLine = order.orderLines[0];
+        const idProduct = orderLine.product.id;
         const nameProduct = orderLine.product.name;
         const productQuantity = orderLine.quantity;
+        expect(orderLine.product).to.have.property("id", idProduct);
 
         cy.wait("@GetCart").then((interception) => {
           expect(interception.response.statusCode).to.eq(200);
