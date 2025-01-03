@@ -2,6 +2,7 @@ describe("Add an available product to the cart", () => {
   it("Add an available product to the cart", () => {
     cy.loginAPI().then((response) => {
       const token = response;
+
       cy.request({
         method: "PUT",
         url: "http://localhost:8081/orders/add",

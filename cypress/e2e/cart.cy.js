@@ -9,15 +9,7 @@ describe("Login", () => {
     cy.visit("/");
     cy.login();
     cy.wait("@PostLogin");
-    cy.get('[data-cy="nav-link-cart"]').click();
-    cy.wait("@GetCart");
-    cy.get("body").then((body) => {
-      if (body.find('[data-cy="cart-line"]').length > 0) {
-        cy.get('[data-cy="cart-line-delete"]').each(($btn) => {
-          cy.wrap($btn).click();
-        });
-      }
-    });
+    cy.ClearCard();
   });
   it("Verify that the product has been added to the cart and that the stock has been updated.", () => {
     cy.get('[data-cy="nav-link-products"]').click();
@@ -92,13 +84,5 @@ describe("Login", () => {
   });
 });
 afterEach(() => {
-  cy.get('[data-cy="nav-link-cart"]').click();
-  cy.wait("@GetCart");
-  cy.get("body").then((body) => {
-    if (body.find('[data-cy="cart-line"]').length > 0) {
-      cy.get('[data-cy="cart-line-delete"]').each(($btn) => {
-        cy.wrap($btn).click();
-      });
-    }
-  });
+  cy.ClearCard();
 });

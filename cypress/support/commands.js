@@ -23,3 +23,15 @@ Cypress.Commands.add("loginAPI", () => {
     return response.body.token;
   });
 });
+
+Cypress.Commands.add("ClearCard", () => {
+  cy.get('[data-cy="nav-link-cart"]').click();
+  cy.wait("@GetCart");
+  cy.get("body").then((body) => {
+    if (body.find('[data-cy="cart-line"]').length > 0) {
+      cy.get('[data-cy="cart-line-delete"]').each(($btn) => {
+        cy.wrap($btn).click();
+      });
+    }
+  });
+});

@@ -3,6 +3,7 @@ describe("Product Sheet Request", () => {
     cy.loginAPI().then((response) => {
       console.log(response);
       const token = response;
+
       cy.request({
         method: "PUT",
         url: "http://localhost:8081/orders/add",
